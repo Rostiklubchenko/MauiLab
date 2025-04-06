@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MAUISql.ViewModels"
+             xmlns:models="clr-namespace:MAUISql.Models"
+             x:DataType="vm:ProductsViewModel"
+             x:Class="MAUISql.MainPage"
+             Title="CRUD операцї">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+        Text="{OnPlatform WinUI='Додати', Default='+'}"
+        IconImageSource="plus.png" 
+        Clicked="ToolbarItem_Clicked"
+        Order="Primary"
+        Priority="0"
+        Command="{Binding SetOperatingProductCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <VerticalStackLayout Grid.RowSpan="2"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="True"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+            <Label Text="{Binding BusyText}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <Label Grid.Row="0"
+               Text="Продукти"
+               FontAttributes="Bold"
+               FontSize="18"
+               Padding="10"/>
+
+        <Grid Grid.Row="1"
+              RowDefinitions="*, Auto">
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding Products}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10"
+                                       Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Frame CornerRadius="12"
+                               BackgroundColor="Gray"
+                               Margin="15, 0"
+                               Padding="10"
+                               HasShadow="True">
+                            <Grid RowDefinitions="Auto, Auto"
+                                  ColumnDefinitions="*, Auto"
+                                  RowSpacing="3">
+                                <Label Grid.Row="0"
+                                       Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontAttributes="Bold" />
+                                <Label Grid.Row="1"
+                                       Grid.Column="0"
+                                       Text="{Binding Price, StringFormat='Ціна: {0}'}"
+                                       FontSize="12"
+                                       FontAttributes="Bold" />
+
+                                <Button Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="Змінити"
+                                        Padding="0"
+                                        HeightRequest="30"
+                                        WidthRequest="100"
+                                        FontSize="12"
+                                        CornerRadius="8"
+                                        BackgroundColor="Cyan"
+                                        TextColor="Black"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProductsViewModel}}, Path=SetOperatingProductCommand}"
+                                        CommandParameter="{Binding .}"/>
+
+                                <Button Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="Видалити"
+                                        Padding="0"
+                                        HeightRequest="30"
+                                        WidthRequest="100"
+                                        FontSize="12"
+                                        CornerRadius="8"
+                                        BackgroundColor="DarkRed"
+                                        TextColor="White"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProductsViewModel}}, Path=DeleteProductCommand}"
+                                        CommandParameter="{Binding Id}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                             VerticalOptions="Center">
+                            <Label Text="Продукти не знайдено"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Text="Спробуйте створити нові продукти нижче "/>
+                        </VerticalStackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <VerticalStackLayout Grid.Row="1"
+                                 Padding="10">
+                <BoxView Color="{DynamicResource Primary}"
+                         HeightRequest="1"
+                         Margin="0,0,0,10"/>
+                <Frame 
+                       BackgroundColor="WhiteSmoke"
+                       HasShadow="True">
+                    <Grid RowDefinitions="Auto, Auto"
+                          ColumnDefinitions="*, Auto"
+                          RowSpacing="10"
+                          ColumnSpacing="10">
+                        <VerticalStackLayout Grid.Row="0"
+                                             Grid.Column="0">
+                            <Entry Text="{Binding OperatingProduct.Name}"
+                                   x:Name="EntryName"
+                                   Placeholder="Назва товару"
+                                   TextColor="Black"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="0"
+                                             Grid.Column="1">
+                            <Entry Text="{Binding OperatingProduct.Price}"
+                                   Placeholder="Ціна"
+                                   x:Name="EntryPrice"
+                                   MinimumWidthRequest="100"
+                                   Keyboard="Numeric"
+                                   TextColor="Black"/>
+                        </VerticalStackLayout>
+
+                        <Button Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Text="Оновити продукт"
+                                HorizontalOptions="Center"
+                                VerticalOptions="End"
+                                CornerRadius="10"
+                                Padding="20,5"
+                                BackgroundColor="Cyan"
+                                TextColor="Black"
+                                Command="{Binding SaveProductCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" 
+                                             Binding="{Binding OperatingProduct.Id}"
+                                             Value="0">
+                                    <Setter Property="Text" Value="Створити продукт"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </Frame>
+            </VerticalStackLayout>
+
+        </Grid>
+    </Grid>
+
+</ContentPage>
