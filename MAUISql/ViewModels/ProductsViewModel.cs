@@ -45,12 +45,12 @@ namespace MAUISql.ViewModels
         }
 
         [RelayCommand]
-        private void SetOperatingProduct(Product? product) { 
+        public void SetOperatingProduct(Product? product) { 
             OperatingProduct = product ?? new(); 
         }
 
         [RelayCommand]
-        private async Task SaveProductAsync()
+        public async Task SaveProductAsync()
         {
             if (OperatingProduct is null)
                 return;
@@ -94,7 +94,7 @@ namespace MAUISql.ViewModels
         }
 
         [RelayCommand]
-        private async Task DeleteProductAsync(int id)
+        public async Task DeleteProductAsync(int id)
         {
             await ExecuteAsync(async () =>
             {
@@ -110,7 +110,7 @@ namespace MAUISql.ViewModels
             }, "Deleting product...");
         }
 
-        private async Task ExecuteAsync(Func<Task> operation, string? busyText = null)
+        public async Task ExecuteAsync(Func<Task> operation, string? busyText = null)
         {
             IsBusy = true;
             BusyText = busyText ?? "Processing...";
