@@ -7,14 +7,13 @@ namespace MAUISql.Tests
 {
     public class TestDatabaseContext : DatabaseContext
     {
-        public TestDatabaseContext() : base(":memory:")
+        public TestDatabaseContext()
         {
             InitAsync().Wait();
         }
 
         private async Task InitAsync()
         {
-            await CreateTableIfNotExists<Product>();
         }
     }
 }

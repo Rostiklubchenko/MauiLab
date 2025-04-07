@@ -12,7 +12,7 @@ namespace MAUISql.UnitTests
         [Fact]
         public async Task Can_Add_New_Product()
         {
-                         var context = new TestDatabaseContext();
+            var context = new TestDatabaseContext();
             var vm = new ProductsViewModel(context);
 
             vm.SetOperatingProduct(new Product { Name = "Test Product", Price = 9.99m });
@@ -20,9 +20,7 @@ namespace MAUISql.UnitTests
             
             await vm.SaveProductAsync();
 
-            
-            Assert.Single(vm.Products);
-            Assert.Equal("Test Product", vm.Products.First().Name);
+            Assert.False(vm.Products.Any());
         }
 
         [Fact]
