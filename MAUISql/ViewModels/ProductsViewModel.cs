@@ -26,7 +26,7 @@ namespace MAUISql.ViewModels
 
         [ObservableProperty]
         private string _busyText;
-                
+
         public async Task LoadProductsAsync()
         {
             await ExecuteAsync(async () =>
@@ -45,12 +45,12 @@ namespace MAUISql.ViewModels
         }
 
         [RelayCommand]
-        public void SetOperatingProduct(Product? product) { 
+        private void SetOperatingProduct(Product? product) { 
             OperatingProduct = product ?? new(); 
         }
 
         [RelayCommand]
-        public async Task SaveProductAsync()
+        private async Task SaveProductAsync()
         {
             if (OperatingProduct is null)
                 return;
@@ -94,7 +94,7 @@ namespace MAUISql.ViewModels
         }
 
         [RelayCommand]
-        public async Task DeleteProductAsync(int id)
+        private async Task DeleteProductAsync(int id)
         {
             await ExecuteAsync(async () =>
             {

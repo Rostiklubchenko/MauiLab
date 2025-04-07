@@ -10,15 +10,15 @@ namespace MAUISql.Data
 
         private SQLiteAsyncConnection _connection;
 
-        public DatabaseContext(string connectionString)
-        {
-            _connection = new SQLiteAsyncConnection(connectionString);
-        }
+        //public DatabaseContext(string connectionString)
+        //{
+        //    _connection = new SQLiteAsyncConnection(connectionString);
+        //}
         private SQLiteAsyncConnection Database =>
             (_connection ??= new SQLiteAsyncConnection(DbPath,
                 SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.SharedCache));
 
-        public async Task CreateTableIfNotExists<TTable>() where TTable : class, new()
+        private async Task CreateTableIfNotExists<TTable>() where TTable : class, new()
         {
             await Database.CreateTableAsync<TTable>();
         }

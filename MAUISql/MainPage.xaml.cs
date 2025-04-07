@@ -1,4 +1,5 @@
 ﻿using MAUISql.ViewModels;
+using Microsoft.Maui.Devices;
 
 namespace MAUISql;
 
@@ -17,6 +18,8 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
         await _viewModel.LoadProductsAsync();
+        string info = $"Назва пристрою: {DeviceInfo.Name}\n" + $"Версія ОС: {DeviceInfo.VersionString}\n";
+        DeviceInfoLabel.Text = info;
 #if ANDROID
         EntryPrice.BackgroundColor = Colors.Transparent;
         EntryName.BackgroundColor = Colors.Transparent;
